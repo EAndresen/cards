@@ -3,12 +3,16 @@ package main
 import "fmt"
 
 func main() {
+	const myCards = "my_cards"
+	const myHand = "my_hand"
+	const handSize = 7
+
 	cards := newDeck()
-	cards.saveToFile("my_cards")
+	cards.saveToFile(myCards)
 
 	fmt.Println("--- New Deck---")
 
-	cardsLoaded := newDeckFromFile("my_cards")
+	cardsLoaded := newDeckFromFile(myCards)
 	cardsLoaded.print()
 
 	fmt.Println("--- New Deck Shuffled ---")
@@ -18,8 +22,8 @@ func main() {
 
 	fmt.Println("--- My Hand ---")
 
-	hand, remainingCards := dealHand(cardsLoaded, 7)
-	hand.saveToFile("my_hand")
+	hand, remainingCards := dealHand(cardsLoaded, handSize)
+	hand.saveToFile(myHand)
 	hand.print()
 
 	fmt.Println("--- Remaining Cards ---")

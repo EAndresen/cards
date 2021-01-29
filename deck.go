@@ -43,8 +43,8 @@ func (deck deck) shuffle() {
 	}
 }
 
-func dealHand(d deck, handSize int) (deck, deck) {
-	return d[:handSize], d[handSize:]
+func dealHand(deck deck, handSize int) (deck, deck) {
+	return deck[:handSize], deck[handSize:]
 }
 
 func (deck deck) toString() string {
