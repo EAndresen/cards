@@ -18,7 +18,7 @@ func main() {
 
 	fmt.Println("--- My Hand ---")
 
-	hand, remainingCards := deal(cardsLoaded, 7)
+	hand, remainingCards := dealHand(cardsLoaded, 7)
 	hand.saveToFile("my_hand")
 	hand.print()
 
@@ -26,4 +26,6 @@ func main() {
 
 	remainingCards.shuffle()
 	remainingCards.print()
+
+	cleanUppDecks()
 }

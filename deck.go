@@ -26,33 +26,33 @@ func newDeck() deck {
 	return cards
 }
 
-func (d deck) print() {
-	for i, card := range d {
+func (deck deck) print() {
+	for i, card := range deck {
 		fmt.Println(i+1, card)
 	}
 }
 
-func (d deck) shuffle() {
+func (deck deck) shuffle() {
 	source := rand.NewSource(time.Now().UnixNano())
 	r := rand.New(source)
 
-	for i := range d {
-		newPosition := r.Intn(len(d) - 1)
+	for i := range deck {
+		newPosition := r.Intn(len(deck) - 1)
 
-		d[i], d[newPosition] = d[newPosition], d[i]
+		deck[i], deck[newPosition] = deck[newPosition], deck[i]
 	}
 }
 
-func deal(d deck, handSize int) (deck, deck) {
+func dealHand(d deck, handSize int) (deck, deck) {
 	return d[:handSize], d[handSize:]
 }
 
-func (d deck) toString() string {
-	return strings.Join(d, ",")
+func (deck deck) toString() string {
+	return strings.Join(deck, ",")
 }
 
-func (d deck) saveToFile(filename string) error {
-	return ioutil.WriteFile(filename, []byte(d.toString()), 0666)
+func (deck deck) saveToFile(filename string) error {
+	return ioutil.WriteFile(filename, []byte(deck.toString()), 0666)
 }
 
 func newDeckFromFile(filename string) deck {
@@ -64,4 +64,9 @@ func newDeckFromFile(filename string) deck {
 
 	deck := strings.Split(string(bs), ",")
 	return deck
+}
+
+func cleanUppDecks() {
+	os.Remove("my_cards")
+	os.Remove("my_hand")
 }
