@@ -1,58 +1,73 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"math/rand"
 	"os"
-	"strings"
 	"time"
 )
 
-type deck []string
+type deck struct {
+	Cards []card
+}
+
+type card struct {
+	Value string
+	Suit  string
+}
 
 func newDeck() deck {
-	cards := deck{}
+	deck := deck{}
 
 	cardSuits := []string{"Spades", "Diamonds", "Hearts", "Clubs"}
 	cardValues := []string{"Ace", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Jack", "Queen", "King"}
 
-	for _, suits := range cardSuits {
+	for _, suit := range cardSuits {
 		for _, value := range cardValues {
-			cards = append(cards, value+" of "+suits)
+			card := card{
+				Suit:  suit,
+				Value: value,
+			}
+			deck.Cards = append(deck.Cards, card)
 		}
 	}
 
-	return cards
+	return deck
 }
 
-func (deck deck) print() {
-	for i, card := range deck {
+func (d deck) print() {
+	for i, card := range d.Cards {
 		fmt.Println(i+1, card)
 	}
 }
 
-func (deck deck) shuffle() {
+func (d deck) shuffle() {
 	source := rand.NewSource(time.Now().UnixNano())
 	r := rand.New(source)
 
-	for i := range deck {
-		newPosition := r.Intn(len(deck) - 1)
+	for i := range d.Cards {
+		newPosition := r.Intn(len(d.Cards) - 1)
 
-		deck[i], deck[newPosition] = deck[newPosition], deck[i]
+		d.Cards[i], d.Cards[newPosition] = d.Cards[newPosition], d.Cards[i]
 	}
 }
 
-func dealHand(deck deck, handSize int) (deck, deck) {
-	return deck[:handSize], deck[handSize:]
+func (d deck) toJson() string {
+	b, _ := json.Marshal(d)
+	return string(b)
 }
 
-func (deck deck) toString() string {
-	return strings.Join(deck, ",")
+func dealHand(d deck, handSize int) (deck, deck) {
+	handCards := d.Cards[:handSize]
+	remainingCards := d.Cards[handSize:]
+
+	return deck{Cards: handCards}, deck{Cards: remainingCards}
 }
 
-func (deck deck) saveToFile(filename string) error {
-	return ioutil.WriteFile(filename, []byte(deck.toString()), 0666)
+func (d deck) saveToFile(filename string) error {
+	return ioutil.WriteFile(filename, []byte(d.toJson()), 0666)
 }
 
 func newDeckFromFile(filename string) deck {
@@ -62,7 +77,13 @@ func newDeckFromFile(filename string) deck {
 		os.Exit(-1)
 	}
 
-	deck := strings.Split(string(bs), ",")
+	var deck deck
+	err = json.Unmarshal(bs, &deck)
+	if err != nil {
+		fmt.Println("Error: ", err)
+		os.Exit(-1)
+	}
+
 	return deck
 }
 

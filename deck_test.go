@@ -8,16 +8,16 @@ import (
 func TestNewDeck(t *testing.T) {
 	deck := newDeck()
 
-	if len(deck) != 52 {
-		t.Errorf("Expected deck length to be 52, but got: %v", len(deck))
+	if len(deck.Cards) != 52 {
+		t.Errorf("Expected deck length to be 52, but got: %v", len(deck.Cards))
 	}
 
-	if deck[0] != "Ace of Spades" {
-		t.Errorf("Expected first card to be Ace of Spades, but got: %v", deck[0])
+	if deck.Cards[0].Suit != "Spades" {
+		t.Errorf("Expected first card suit to be Ace, but got: %v", deck.Cards[0].Suit)
 	}
 
-	if deck[len(deck)-1] != "King of Clubs" {
-		t.Errorf("Expected last card to be King of Clubs, but got: %v", deck[len(deck)-1])
+	if deck.Cards[len(deck.Cards)-1].Value != "King" {
+		t.Errorf("Expected last card to be King of Clubs, but got: %v", deck.Cards[len(deck.Cards)-1].Value)
 	}
 }
 
@@ -30,8 +30,8 @@ func TestSaveToFileAndNewDeckFromFile(t *testing.T) {
 
 	loadedDeck := newDeckFromFile(testingDeck)
 
-	if len(loadedDeck) != 52 {
-		t.Errorf("Expected deck length to be 52, but got: %v", len(loadedDeck))
+	if len(loadedDeck.Cards) != 52 {
+		t.Errorf("Expected deck length to be 52, but got: %v", len(loadedDeck.Cards))
 	}
 
 	_ = os.Remove(testingDeck)
@@ -42,12 +42,12 @@ func TestDealHand(t *testing.T) {
 
 	hand, remainingCards := dealHand(deck, 12)
 
-	if len(hand) != 12 {
-		t.Errorf("Expected hand size to be 10, but was: %v", len(hand))
+	if len(hand.Cards) != 12 {
+		t.Errorf("Expected hand size to be 10, but was: %v", len(hand.Cards))
 
 	}
 
-	if len(remainingCards) != 40 {
-		t.Errorf("Expected remainging cards size to be 40, but was: %v", len(remainingCards))
+	if len(remainingCards.Cards) != 40 {
+		t.Errorf("Expected remainging Cards size to be 40, but was: %v", len(remainingCards.Cards))
 	}
 }

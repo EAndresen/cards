@@ -7,10 +7,13 @@ func main() {
 	const myHand = "my_hand"
 	const handSize = 7
 
+	fmt.Println("--- New Deck---")
+
 	cards := newDeck()
 	cards.saveToFile(myCards)
+	cards.print()
 
-	fmt.Println("--- New Deck---")
+	fmt.Println("--- New Deck From File---")
 
 	cardsLoaded := newDeckFromFile(myCards)
 	cardsLoaded.print()
@@ -23,6 +26,7 @@ func main() {
 	fmt.Println("--- My Hand ---")
 
 	hand, remainingCards := dealHand(cardsLoaded, handSize)
+
 	hand.saveToFile(myHand)
 	hand.print()
 
