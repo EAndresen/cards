@@ -10,6 +10,8 @@ func playCards(player1 player, player2 player) player {
 		player1.rank = 2
 		player2.rank = 1
 		winner = player2
+	} else {
+		winner.firstName = "DRAW"
 	}
 	return winner
 }
