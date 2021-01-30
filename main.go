@@ -1,39 +1,37 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
 func main() {
-	const myCards = "my_cards"
-	const myHand = "my_hand"
+	const firstDeckName = "first_deck"
+	const secondDeckName = "second_deck"
 	const handSize = 7
 
-	fmt.Println("--- New Deck---")
+	firstDeck := newDeck()
+	firstDeck.saveToFile(firstDeckName)
+	secondDeck := newDeck()
+	secondDeck.saveToFile(secondDeckName)
 
-	cards := newDeck()
-	cards.saveToFile(myCards)
-	cards.print()
+	fmt.Println("--- New Player - Paquito ---")
+	paquito := createPlayer("Paquito", "Navarro")
+	paquito.deck = firstDeck
+	paquito.deck.shuffle()
+	paquito.hand, paquito.deck = dealHand(paquito.deck, handSize)
+	fmt.Printf("%+v \n", paquito)
 
-	fmt.Println("--- New Deck From File---")
+	fmt.Println("--- New Player - Gaben ---")
+	gaben := createPlayer("Gaben", "Newell")
+	gaben.deck = secondDeck
+	gaben.deck.shuffle()
+	gaben.hand, paquito.deck = dealHand(paquito.deck, handSize)
+	fmt.Printf("%+v \n", gaben)
 
-	cardsLoaded := newDeckFromFile(myCards)
-	cardsLoaded.print()
-
-	fmt.Println("--- New Deck Shuffled ---")
-
-	cardsLoaded.shuffle()
-	cardsLoaded.print()
-
-	fmt.Println("--- My Hand ---")
-
-	hand, remainingCards := dealHand(cardsLoaded, handSize)
-
-	hand.saveToFile(myHand)
-	hand.print()
-
-	fmt.Println("--- Remaining Cards ---")
-
-	remainingCards.shuffle()
-	remainingCards.print()
+	fmt.Println("--- AND THE BIG WINNER IS!")
+	winner := playCards(paquito, gaben)
+	fmt.Print(strings.ToUpper(winner.firstName))
 
 	cleanUppDecks()
 }

@@ -14,7 +14,7 @@ type deck struct {
 }
 
 type card struct {
-	Value string
+	Value int
 	Suit  string
 }
 
@@ -22,7 +22,7 @@ func newDeck() deck {
 	deck := deck{}
 
 	cardSuits := []string{"Spades", "Diamonds", "Hearts", "Clubs"}
-	cardValues := []string{"Ace", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Jack", "Queen", "King"}
+	cardValues := []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
 
 	for _, suit := range cardSuits {
 		for _, value := range cardValues {
@@ -88,6 +88,6 @@ func newDeckFromFile(filename string) deck {
 }
 
 func cleanUppDecks() {
-	os.Remove("my_cards")
-	os.Remove("my_hand")
+	os.Remove("first_deck")
+	os.Remove("second_deck")
 }
