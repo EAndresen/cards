@@ -26,7 +26,7 @@ func main() {
 	gaben := createPlayer("Gaben", "Newell")
 	gaben.deck = secondDeck
 	gaben.deck.shuffle()
-	gaben.hand, paquito.deck = dealHand(paquito.deck, handSize)
+	gaben.hand, gaben.deck = dealHand(gaben.deck, handSize)
 	fmt.Printf("%+v \n", gaben)
 
 	fmt.Println("--- AND THE BIG WINNER IS!")
